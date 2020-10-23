@@ -15,6 +15,21 @@ let arrayOfLinks = [{ "name": "Link Name1", "url": "https://linkurl1" },
 //   })
 // }
 
+
+
+class LinksTransformer {
+  constructor(links){
+    this.links = links
+  }
+  async element(element){
+    console.log('hiii' )
+
+  }
+}
+
+const rewriter = new HTMLRewriter()
+  .on('div', new LinksTransformer('id'))
+
 async function handleRequest(request) {
   const updateResponse = JSON.stringify(arrayOfLinks)
   if(request.url === 'https://example.com/links'){
@@ -22,6 +37,7 @@ async function handleRequest(request) {
       headers: {'content-type': 'application/json'}
     })
   }else{
-    return new Response('this is the else')
+    const response = await fetch('https://static-links-page.signalnerve.workers.dev')
+    return rewriter.transform(response)
   }
-}
+};
