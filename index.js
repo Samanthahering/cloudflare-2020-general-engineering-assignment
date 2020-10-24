@@ -51,12 +51,14 @@ const rewriter = new HTMLRewriter()
 
 async function handleRequest(request) {
   const updateResponse = JSON.stringify(arrayOfLinks)
-  if(request.url === 'https://example.com/links'){
+  if(request.url === 'https://my-worker.samanthahering.workers.dev/links'){
     return new Response(updateResponse, {
       headers: {'content-type': 'application/json'}
     })
   }else{
     const response = await fetch('https://static-links-page.signalnerve.workers.dev')
-    return rewriter.transform(response)
+    return rewriter.transform(response, {
+      headers: {'content-type': 'text/html'}
+    })
   }
 };
