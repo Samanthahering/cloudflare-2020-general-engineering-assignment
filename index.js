@@ -2,9 +2,9 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
-let arrayOfLinks = [{ "name": "Link Name1", "url": "https://linkurl1" },
-                    { "name": "Link Name2", "url": "https://linkurl2" },
-                    { "name": "Link Name3", "url": "https://linkurl3" }]
+let arrayOfLinks = [{ "name": "Link Name 1", "url": "https://linkurl1" },
+                    { "name": "Link Name 2", "url": "https://linkurl2" },
+                    { "name": "Link Name 3", "url": "https://linkurl3" }]
 /**
  * Respond with hello worker text
  * @param {Request} request
@@ -22,13 +22,22 @@ class LinksTransformer {
     this.links = links
   }
   async element(element){
-    console.log('hiii' )
+    const divId = element.getAttribute('id')
+    if(divId === 'links'){
+      this.links.map((link) => {
+        element.append(`<a href=${link.url}>${link.name}</a>`, {html: true})
+      })
+    }
+
+    if(divId === 'profile'){
+      element.removeAttribute('style')
+    }
 
   }
 }
 
 const rewriter = new HTMLRewriter()
-  .on('div', new LinksTransformer('id'))
+  .on('div', new LinksTransformer(arrayOfLinks))
 
 async function handleRequest(request) {
   const updateResponse = JSON.stringify(arrayOfLinks)
