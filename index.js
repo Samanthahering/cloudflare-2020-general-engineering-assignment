@@ -52,7 +52,6 @@ class LinksTransformer {
     }
     if(element.tagName === 'body'){
       element.setAttribute('style', 'background-color: #FBB6CE')
-
     }
   }
 }
@@ -63,6 +62,7 @@ const rewriter = new HTMLRewriter()
   .on('h1', new LinksTransformer())
   .on('title', new LinksTransformer())
   .on('body', new LinksTransformer())
+
 
 async function handleRequest(request) {
   const updateResponse = JSON.stringify(arrayOfLinks)
